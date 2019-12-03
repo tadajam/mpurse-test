@@ -1,14 +1,140 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Ionic Blank
+      <h1>Mpurse Test</h1>
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
-  </div>
+  <ion-list>    
+    <ion-item lines="none">
+      <ion-label>Hide(Mobile)</ion-label>
+      <ion-button (click)="hide()" slot="end">Hide</ion-button>
+    </ion-item>
+
+    <ion-item-divider>
+      <ion-label color="primary">
+        <h2>EventEmitter</h2>
+      </ion-label>
+    </ion-item-divider>
+
+    <ion-item lines="none">
+      <ion-label>Is Unlocked</ion-label>
+      <ion-icon *ngIf="isUnlocked" name="checkmark" color="primary"></ion-icon>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label position="floating">Addres</ion-label>
+      <ion-textarea [value]="address" readonly="true" autoGrow="true"></ion-textarea>
+      <ion-button (click)="getAddress()" slot="end">Login</ion-button>
+    </ion-item>
+
+    <ion-item-divider>
+      <ion-label color="primary">
+        <h2>Send Asset</h2>
+      </ion-label>
+    </ion-item-divider>
+
+    <ion-item lines="none">
+      <ion-label position="floating">Tx Hash</ion-label>
+      <ion-textarea [value]="sendAssetTxHash" readonly="true" autoGrow="true"></ion-textarea>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label>All Fixed</ion-label>
+      <ion-button (click)="sendAsset('MJhdBDsJKnJEYcQapW1PdMvV269vd3mVX9', 'XMP', 1, 'plain', 'test')" slot="end">Send</ion-button>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label>Address Fixed</ion-label>
+      <ion-button (click)="sendAsset('MJhdBDsJKnJEYcQapW1PdMvV269vd3mVX9', '', 0, '', '')" slot="end">Send</ion-button>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label>Not Fixed</ion-label>
+      <ion-button (click)="sendAsset('', '', 0, '', '')" slot="end">Send</ion-button>
+    </ion-item>
+
+
+    <ion-item-divider>
+      <ion-label color="primary">
+        <h2>Sign Message</h2>
+      </ion-label>
+    </ion-item-divider>
+
+    <ion-item lines="none">
+      <ion-label position="floating">Signature</ion-label>
+      <ion-textarea [value]="signature" readonly="true" autoGrow="true"></ion-textarea>
+      <ion-button (click)="signMessage()" slot="end">Sign</ion-button>
+    </ion-item>
+
+
+    <ion-item-divider>
+      <ion-label color="primary">
+        <h2>Sign Raw Transaction</h2>
+      </ion-label>
+    </ion-item-divider>
+
+    <ion-item lines="none">
+      <ion-label position="floating">Sign Tx</ion-label>
+      <ion-textarea [value]="signedTx" readonly="true" autoGrow="true"></ion-textarea>
+      <ion-button (click)="signRawTransaction()" slot="end">Sign</ion-button>
+    </ion-item>
+
+
+    <ion-item-divider>
+      <ion-label color="primary">
+        <h2>Send Raw Transaction</h2>
+      </ion-label>
+    </ion-item-divider>
+
+    <ion-item lines="none">
+      <ion-label position="floating">Send Tx</ion-label>
+      <ion-textarea [value]="sendTxHash" readonly="true" autoGrow="true"></ion-textarea>
+      <ion-button (click)="sendRawTransaction()" slot="end">Sign</ion-button>
+    </ion-item>
+
+    
+    <ion-item-divider>
+      <ion-label color="primary">
+        <h2>Mpchain API</h2>
+      </ion-label>
+    </ion-item-divider>
+
+    <ion-item lines="none">
+      <ion-label position="floating">Blanaces</ion-label>
+      <ion-textarea [value]="balances" readonly="true" autoGrow="true"></ion-textarea>
+      <ion-button (click)="getBalances()" slot="end">Get</ion-button>
+    </ion-item>
+
+    <ion-item-divider>
+      <ion-label color="primary">
+        <h2>Counterblock API</h2>
+      </ion-label>
+    </ion-item-divider>
+
+    <ion-item lines="none">
+      <ion-label position="floating">Assets Info</ion-label>
+      <ion-textarea [value]="assetsInfo" readonly="true" autoGrow="true"></ion-textarea>
+      <ion-button (click)="getAssetsInfo()" slot="end">Get</ion-button>
+    </ion-item>
+
+    <ion-item-divider>
+      <ion-label color="primary">
+        <h2>Counterparty API</h2>
+      </ion-label>
+    </ion-item-divider>
+
+    <ion-item lines="none">
+      <ion-label position="floating">Create Send</ion-label>
+      <ion-textarea [value]="createdTx" readonly="true" autoGrow="true"></ion-textarea>
+      <ion-button (click)="createSend()" slot="end">Create</ion-button>
+    </ion-item>
+      
+  </ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-item><ion-label>mpurse</ion-label></ion-item>
+</ion-footer>
