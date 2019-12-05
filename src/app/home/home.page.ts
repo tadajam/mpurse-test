@@ -40,7 +40,8 @@ export class HomePage {
 
   getAddress() {
     this.mpurseService.getAddress().subscribe({
-      next: address => this.address = address
+      next: address => this.address = address,
+      error: error => this.address = JSON.stringify(error)
     });
   }
 
@@ -49,7 +50,7 @@ export class HomePage {
     this.mpurseService.sendAsset(to, asset, amount, memoType, memoValue)
       .subscribe({
         next: txHash => this.sendAssetTxHash = txHash,
-        error: error => console.log(error)
+        error: error => this.sendAssetTxHash = JSON.stringify(error)
       });
   }
 
@@ -58,36 +59,43 @@ export class HomePage {
     this.mpurseService.signMessage('test message')
       .subscribe({
         next: signature => this.signature = signature,
-        error: error => console.log(error)
+        error: error => this.signature = JSON.stringify(error)
       });
   }
 
   signedTx = '';
   signRawTransaction(): void {
-    this.mpurseService.createSend(this.address)
-      .pipe(flatMap(tx => this.mpurseService.signRawTransaction(tx)))
+    this.mpurseService.getAddress()
+      .pipe(
+        flatMap(address => this.mpurseService.createSend(address)),
+        flatMap(tx => this.mpurseService.signRawTransaction(tx))
+      )
       .subscribe({
         next: signedTx => this.signedTx = signedTx,
-        error: error => console.log(error)
+        error: error => this.signedTx = JSON.stringify(error)
       });
   }
 
   sendTxHash = '';
   sendRawTransaction(): void {
-    this.mpurseService.createSend(this.address)
-      .pipe(flatMap(tx => this.mpurseService.sendRawTransaction(tx)))
+    this.mpurseService.getAddress()
+      .pipe(
+        flatMap(address => this.mpurseService.createSend(address)),
+        flatMap(tx => this.mpurseService.sendRawTransaction(tx))
+      )
       .subscribe({
         next: sendTxHash => this.sendTxHash = sendTxHash,
-        error: error => console.log(error)
+        error: error => this.sendTxHash = JSON.stringify(error)
       });
   }
 
   balances: any;
   getBalances(): void {
-    this.mpurseService.getBalances(this.address)
+    this.mpurseService.getAddress()
+      .pipe(flatMap(address => this.mpurseService.getBalances(address)))
       .subscribe({
         next: balances => this.balances = JSON.stringify(balances),
-        error: error => console.log(error)
+        error: error => this.balances = JSON.stringify(error)
       });
   }
 
@@ -96,16 +104,17 @@ export class HomePage {
     this.mpurseService.getAssetsInfo(['XMP', 'MPCHAIN'])
       .subscribe({
         next: assetsInfo => this.assetsInfo = JSON.stringify(assetsInfo),
-        error: error => console.log(error)
+        error: error => this.assetsInfo = JSON.stringify(error)
       });
   }
 
   createdTx: string;
   createSend() {
-    this.mpurseService.createSend(this.address)
+    this.mpurseService.getAddress()
+      .pipe(flatMap(address => this.mpurseService.createSend(address)))
       .subscribe({
         next: tx => this.createdTx = tx,
-        error: error => console.log(error)
+        error: error => this.createdTx = JSON.stringify(error)
       });
   }
 
