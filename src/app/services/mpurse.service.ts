@@ -61,7 +61,7 @@ export class MpurseService {
       destination: 'MJhdBDsJKnJEYcQapW1PdMvV269vd3mVX9',
       asset: 'XMP',
       quantity: 1000000,
-      fee_per_kb: 1
+      fee_per_kb: 101000
     };
     return from(window.mpurse.counterParty('create_send', cpParams));
   }
