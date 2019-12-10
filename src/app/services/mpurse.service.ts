@@ -3,7 +3,8 @@ declare global {
 }
 
 import { Injectable } from '@angular/core';
-import { Subject, fromEvent, Observable, from } from 'rxjs';
+import { Subject, fromEvent, Observable, from, interval } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +17,19 @@ export class MpurseService {
   selectedAddressState = this.selectedAddressSubject.asObservable();
 
   constructor() {
-    if (window.mpurse) {
-      fromEvent(window.mpurse.updateEmitter, 'stateChanged')
-        .subscribe((isUnlocked: boolean) => this.unlockSubject.next(isUnlocked));
-  
-      fromEvent(window.mpurse.updateEmitter, 'addressChanged')
-        .subscribe((address: string) => this.selectedAddressSubject.next(address));
-    }
+    const checkMpurse = interval(10).pipe(
+      take(50)
+    ).subscribe(x => {
+      if (window.mpurse) {
+        console.log(x);
+        checkMpurse.unsubscribe();
+        fromEvent(window.mpurse.updateEmitter, 'stateChanged')
+          .subscribe((isUnlocked: boolean) => this.unlockSubject.next(isUnlocked));
+    
+        fromEvent(window.mpurse.updateEmitter, 'addressChanged')
+          .subscribe((address: string) => this.selectedAddressSubject.next(address));
+      }
+    });
   }
 
   getAddress(): Observable<string> {
